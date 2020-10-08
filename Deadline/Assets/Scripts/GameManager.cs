@@ -5,7 +5,7 @@ using UnityEngine;
 
 public enum GameState
 {
-    ScreenOne, ScreenTwo, Walking
+    ScreenOne, ScreenTwo, Walking, Sitting
 }
 
 
@@ -16,7 +16,8 @@ public class GameManager : MonoBehaviour
 
     //If true, the player was last looking at screenOne
     //If false, the player was last looking at screenTwo
-    public bool isScreenOne;
+    public bool isScreenOne = true;
+    public bool canSit = false;
 
     [Header("References to other scripts :(")]
     public ScreenManager screenManager;
@@ -54,9 +55,20 @@ public class GameManager : MonoBehaviour
 
             case GameState.Walking:
                 Debug.Log("The player is now standing");
+                screenManager.StandingCamera();
+                uiManager.StopUI();
+                break;
+
+            case GameState.Sitting:
+                uiManager.StartUI();
                 break;
             default:
                 break;
         }
+    }
+
+    public void SetCanSit(bool b)
+    {
+        canSit = b;
     }
 }

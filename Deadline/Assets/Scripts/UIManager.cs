@@ -41,4 +41,21 @@ public class UIManager : MonoBehaviour
 
         StartCoroutine(WaitingForScreenChange());
     }
+
+    public void StopUI()
+    {
+        screenOne.gameObject.SetActive(false);
+        screenTwo.gameObject.SetActive(false);
+
+        Cursor.lockState = CursorLockMode.Locked;
+
+        StopAllCoroutines();
+    }
+
+    public void StartUI()
+    {
+        Cursor.lockState = CursorLockMode.None;
+        ChangeCamera(GameManager.Instance.isScreenOne);
+        StartCoroutine(WaitingForScreenChange());
+    }
 }
