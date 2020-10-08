@@ -36,12 +36,6 @@ public class GameManager : MonoBehaviour
             return _instance;
         }
     }
-
-    private void Start()
-    {
-        StartCoroutine(WaitingForScreenChange());
-    }
-
     
     // Update is called once the state is changed
     public void UpdateGameState()
@@ -64,19 +58,5 @@ public class GameManager : MonoBehaviour
             default:
                 break;
         }
-    }
-
-
-    //Waits until the button to change the screens appears then changes it
-    IEnumerator WaitingForScreenChange()
-    {
-        yield return new WaitUntil(() => Input.GetButtonDown("Switch Screens"));
-
-        bool isCameraOne = state == GameState.ScreenOne ? true : false;
-        uiManager.ChangeCamera(isCameraOne);
-
-        yield return new WaitForEndOfFrame();
-
-        StartCoroutine(WaitingForScreenChange());
     }
 }
