@@ -12,20 +12,39 @@ public enum GameState
 public class GameManager : MonoBehaviour
 {
     // Keeps track of the player game state
-    public static GameState state = GameState.ScreenOne;
+    public GameState state = GameState.ScreenOne;
 
     //If true, the player was last looking at screenOne
     //If false, the player was last looking at screenTwo
     public bool isScreenOne;
+
+    [Header("References to other scripts :(")]
     public ScreenManager screenManager;
+    public UIManager uiManager;
+
+    private static GameManager _instance;
+
+    public static GameManager Instance
+    {
+        get
+        {
+            if (_instance == null)
+            {
+                _instance = GameObject.FindObjectOfType<GameManager>();
+            }
+
+            return _instance;
+        }
+    }
 
     private void Start()
     {
         StartCoroutine(WaitingForScreenChange());
     }
 
+    
     // Update is called once the state is changed
-    void UpdateGameState()
+    public void UpdateGameState()
     {
         switch (state)
         {
@@ -53,8 +72,8 @@ public class GameManager : MonoBehaviour
     {
         yield return new WaitUntil(() => Input.GetButtonDown("Switch Screens"));
 
-        _ = state == GameState.ScreenOne ? state = GameState.ScreenTwo : state = GameState.ScreenOne;
-        UpdateGameState();
+        bool isCameraOne = state == GameState.ScreenOne ? true : false;
+        uiManager.ChangeCamera(isCameraOne);
 
         yield return new WaitForEndOfFrame();
 
