@@ -15,18 +15,21 @@ public class ScreenManager : MonoBehaviour
         StartCoroutine(WaitingForStanding());
     }
 
+    //Changes which camera is enabled
     public void ChangeCameraView(bool isScreenOne)
     {
         one.enabled = isScreenOne;
         two.enabled = !isScreenOne;
     }
 
+    //Turns on the player when switching to free roam
     public void StandingCamera()
     {
         player.SetActive(true);
     }
 
-    //Waits until the button to stand up
+    //Waits until the button to stand up is pressed
+    //Changes to free roam state when it does
     IEnumerator WaitingForStanding()
     {
         yield return new WaitUntil(() => Input.GetButtonDown("Standing"));
@@ -40,7 +43,8 @@ public class ScreenManager : MonoBehaviour
         StartCoroutine(WaitingForSitting());
     }
 
-    //Back to Sitting
+    //Waits until the button to sit is pressed
+    //Changes to computer state when it does
     IEnumerator WaitingForSitting()
     {
         yield return new WaitUntil(() => Input.GetButtonDown("Sitting") && GameManager.Instance.canSit);

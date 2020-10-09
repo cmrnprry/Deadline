@@ -8,7 +8,6 @@ public enum GameState
     ScreenOne, ScreenTwo, Walking, Sitting
 }
 
-
 public class GameManager : MonoBehaviour
 {
     // Keeps track of the player game state
@@ -38,7 +37,7 @@ public class GameManager : MonoBehaviour
         }
     }
     
-    // Update is called once the state is changed
+    // Is called everytime the game state is updated
     public void UpdateGameState()
     {
         switch (state)
@@ -67,6 +66,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    //Setter method to set the canSit bool
     public void SetCanSit(bool b)
     {
         canSit = b;

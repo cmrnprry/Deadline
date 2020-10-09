@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ComputerInteraction : MonoBehaviour
 {
-    // Start is called before the first frame update
+    // Trigger to check if the player is close enough to the computer
     private void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Player")
@@ -14,6 +14,7 @@ public class ComputerInteraction : MonoBehaviour
         }
     }
 
+    // Trigger to check if the player left the computer
     private void OnTriggerExit(Collider other)
     {
         if (other.tag == "Player")

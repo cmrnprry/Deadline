@@ -14,7 +14,7 @@ public class UIManager : MonoBehaviour
         StartCoroutine(WaitingForScreenChange());
     }
 
-    //Turns off the coreect Canvas
+    //Turns off the correct Canvas
     private void TurningoffOther(bool isScreenOne)
     {
         screenOne.gameObject.SetActive(!isScreenOne);
@@ -22,6 +22,7 @@ public class UIManager : MonoBehaviour
     }
 
     //Conntected to the "Switch Screen" Button on the canvases
+    //Checks which scree is currently on and switches the state
     public void ChangeCamera(bool isCameraOne)
     {
         _ = (isCameraOne == true) ? GameManager.Instance.state = GameState.ScreenTwo : GameManager.Instance.state = GameState.ScreenOne;
@@ -42,6 +43,7 @@ public class UIManager : MonoBehaviour
         StartCoroutine(WaitingForScreenChange());
     }
 
+    //Turns off all the COmputer UI and hides the mouse
     public void StopUI()
     {
         screenOne.gameObject.SetActive(false);
@@ -52,6 +54,8 @@ public class UIManager : MonoBehaviour
         StopAllCoroutines();
     }
 
+
+    //Turns the mouse cursor and correct screen back on, and restarts the waiting for screen change coroutine
     public void StartUI()
     {
         Cursor.lockState = CursorLockMode.None;
