@@ -699,6 +699,69 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!1 &511729156
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 511729157}
+  - component: {fileID: 511729158}
+  m_Layer: 0
+  m_Name: SabotageManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &511729157
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 511729156}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 544045630}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &511729158
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 511729156}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66e336c7657d80f4b9012538946c552c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sabotageChanceLow: 25
+  sabotageChanceNormal: 50
+  sabotageChanceMedium: 75
+  sabotageChanceHigh: 100
+  weightTVLow: 7
+  weightTVNormal: 0
+  weightTVMedium: 0
+  weightTVHigh: 0
+  weightDoorLow: 4
+  weightDoorNormal: 0
+  weightDoorMedium: 0
+  weightDoorHigh: 0
+  weightInternetLow: 2
+  weightInternetNormal: 0
+  weightInternetMedium: 0
+  weightInternetHigh: 0
+  weightBreakerLow: 1
+  weightBreakerNormal: 0
+  weightBreakerMedium: 0
+  weightBreakerHigh: 0
 --- !u!1 &544045629
 GameObject:
   m_ObjectHideFlags: 0
@@ -729,6 +792,7 @@ Transform:
   - {fileID: 660904591}
   - {fileID: 1456625101}
   - {fileID: 1333838466}
+  - {fileID: 511729157}
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -902,6 +966,11 @@ MonoBehaviour:
   state: 0
   isScreenOne: 0
   canSit: 0
+  currSpooky: 0
+  delta: 1
+  activeDelta: 2
+  maxSpooky: 100
+  isSabotageActive: 0
   screenManager: {fileID: 1456625100}
   uiManager: {fileID: 1333838467}
 --- !u!4 &660904591
