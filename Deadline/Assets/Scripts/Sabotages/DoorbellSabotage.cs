@@ -9,14 +9,8 @@ public class DoorbellSabotage : Sabotage
         Debug.Log("Doorbell Sabotage");
     }
 
-    public override void DecideSabotage()
-    {
-        Debug.Log("Internet Sabotage");
-
-    }
-
     public override void FixSabotage()
     {
-        throw new System.NotImplementedException();
+        Debug.Log("Fix Doorbell");
     }
 }

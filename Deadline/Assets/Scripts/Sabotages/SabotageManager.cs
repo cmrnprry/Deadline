@@ -6,6 +6,9 @@ public class SabotageManager : MonoBehaviour
 {
     private List<Sabotage> sabotages = new List<Sabotage>();
 
+    //How long between sabotages there are
+    public float delay = 5f;
+
     //These are the "fitness values" in the roulette wheel algorythm  
     [Header("Chance")]
     public int sabotageChanceLow;
@@ -48,9 +51,11 @@ public class SabotageManager : MonoBehaviour
     }
 
 
-    //So maybe make a fake chance of everyhting happening depending on the current spooky meter?
-    // For the sake of ease, sppok meter will go from 0 - 100 and there are 4 stages?
-    // So stage 1 is from 0-25, Stage 2 is 26 - 50 etc.
+    //SO IM NOT REALLY SURE HOW THIS WORKS BUT IT'S MORE OR LESS THE ROULETTE ALGORITM
+    //BASICALLY everything in the inspector is a weight. The higher the number, the more likely it is to happen
+    //What this code does is takt the sum of them, find the value that each weight lies between 0 & 1, then picks a random number between 0 & 1
+    //If that random number is less than or equal to the wieght, it triggers the sabotage.
+    //This will call itself every X number of seconds that we decide. We can also ver easily change this to a range.
     IEnumerator DecideSabotage()
     {
         float sum = 0, random = 0, curr = GameManager.Instance.currSpooky;
@@ -95,11 +100,12 @@ public class SabotageManager : MonoBehaviour
 
         float[] values = { tvFit, doorFit, internetFit, breakerFit };
         random = GetPercentChance();
-        Debug.Log("random: " + random);
-        Debug.Log("tvFit: " + tvFit);
-        Debug.Log("doorFit: " + doorFit);
-        Debug.Log("internetFit: " + internetFit);
-        Debug.Log("breakerFit: " + breakerFit);
+
+        //Debug.Log("random: " + random);
+        //Debug.Log("tvFit: " + tvFit);
+        //Debug.Log("doorFit: " + doorFit);
+        //Debug.Log("internetFit: " + internetFit);
+        //Debug.Log("breakerFit: " + breakerFit);
 
         for (int i = 0; i < values.Length; i++)
         {
@@ -109,10 +115,11 @@ public class SabotageManager : MonoBehaviour
             }
         }
 
-        yield return new WaitForSecondsRealtime(5f);
+        yield return new WaitForSecondsRealtime(delay);
         StartCoroutine(DecideSabotage());
     }
 
+    //Gets a random number between 0 and 1 inclusive
     private float GetPercentChance()
     {
         float chance = Random.Range(0f, 1f);

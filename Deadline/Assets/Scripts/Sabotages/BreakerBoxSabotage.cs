@@ -9,13 +9,8 @@ public class BreakerBoxSabotage : Sabotage
         Debug.Log("Breaker Box Sabotage");
     }
 
-    public override void DecideSabotage()
-    {
-        Debug.Log("Breaker Box Sabotage");
-    }
-
     public override void FixSabotage()
     {
-        throw new System.NotImplementedException();
+        Debug.Log("Fix Breaker Box");
     }
 }

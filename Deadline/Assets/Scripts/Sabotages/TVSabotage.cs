@@ -9,14 +9,8 @@ public class TVSabotage : Sabotage
         Debug.Log("TV Sabotage");
     }
 
-    public override void DecideSabotage()
-    {
-        Debug.Log("TV Sabotage");
-
-    }
-
     public override void FixSabotage()
     {
-        throw new System.NotImplementedException();
+        Debug.Log("Fix TV");
     }
 }
