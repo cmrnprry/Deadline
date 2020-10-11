@@ -19,6 +19,12 @@ public class SabotageManager : MonoBehaviour
     //How long between sabotages there are
     public float delay = 5f;
 
+    [Header("Internet MiniGame")]
+    //bool to check if the Internet button is being held down
+    private bool isHeld = false;
+    //bool to check if you've waited long enough
+    private bool isFinished = false;
+
     //These are the "fitness values" in the roulette wheel algorythm  
     [Header("Chance")]
     public int sabotageChanceLow;
@@ -64,7 +70,7 @@ public class SabotageManager : MonoBehaviour
             sabotages[i].FakeStart(objects[i]);
         }
 
-        sabotages[0].ActivateSabotage();
+        sabotages[2].ActivateSabotage();
         //StartCoroutine(DecideSabotage());
     }
 
@@ -153,6 +159,7 @@ public class SabotageManager : MonoBehaviour
         return false;
     }
 
+
     //Gets a random number between 0 and 1 inclusive
     private float GetPercentChance()
     {
@@ -160,4 +167,39 @@ public class SabotageManager : MonoBehaviour
 
         return chance;
     }
+
+    ////////////////////////   INTERNET MINI GAME CODE     /////////////////////////////////////////////////////
+
+    //Is called when the player clicks on the button
+    public void StartRestartInternet()
+    {
+        Debug.Log("start");
+
+        isHeld = true;
+        StartCoroutine(RestartInternet());
+    }
+
+    //This is called when the player releaces the mouse on the "resetart" button
+    public void InternetGameWon()
+    {
+        if (isFinished && isHeld)
+        {
+            sabotages[2].FixSabotage();
+            Debug.Log("won");
+        }
+        else
+        {
+            Debug.Log("not won");
+        }
+    }
+
+    //While the player is holding down the button
+    IEnumerator RestartInternet()
+    {
+        yield return new WaitForSecondsRealtime(15f);
+        isFinished = true;
+        Debug.Log("Finished!");
+    }
+
+
 }

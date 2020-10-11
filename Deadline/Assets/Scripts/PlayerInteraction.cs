@@ -18,6 +18,10 @@ public class PlayerInteraction : MonoBehaviour
     public TextMeshProUGUI TVText;
     //public Animator door;
 
+    [Header("Internet Sabotage")]
+    public GameObject internet;
+    public FirstPersonLook fpsLook;
+
     // Triggers to check if the player is closeenough to an object to interact with it
     private void OnTriggerEnter(Collider other)
     {
@@ -30,7 +34,7 @@ public class PlayerInteraction : MonoBehaviour
         {
             Debug.Log("TV");
             sabotage = 0;
-            //Stop Sabotage but allow player to open the door
+            //Turns on the text to tell teh player to turn off teh TV
             TVText.gameObject.SetActive(true);
             StartCoroutine(WaitingForInput());
         }
@@ -42,6 +46,14 @@ public class PlayerInteraction : MonoBehaviour
             sabotageManager.StopSabatage(SabotageType.DoorBell);
             doorText.gameObject.SetActive(true);
             StartCoroutine(WaitingForInput());
+        }
+        else if (other.tag == "Internet")
+        {
+            Debug.Log("internet");
+            sabotage = 2;
+            internet.SetActive(true);
+            Cursor.lockState = CursorLockMode.None;
+            fpsLook.enabled = false;
         }
 
     }
@@ -69,17 +81,34 @@ public class PlayerInteraction : MonoBehaviour
             //Play Door creak SFX?
             doorText.gameObject.SetActive(false);
         }
+        else if (other.tag == "Internet")
+        {
+            Debug.Log("no internet");
+            sabotage = -1;
+            internet.SetActive(false);
+            fpsLook.enabled = true;
+            Cursor.lockState = CursorLockMode.Locked;
+        }
     }
 
+    //For if the played uses UI exit
+    public void TurnOffInternetGame()
+    {
+        Debug.Log("no internet");
+        sabotage = -1;
+        internet.SetActive(false);
+        fpsLook.enabled = true;
+        Cursor.lockState = CursorLockMode.Locked;
+    }
 
     //Waits for specific input
     private IEnumerator WaitingForInput()
     {
-        yield return new WaitUntil(() => Input.GetButtonDown("Open Door"));
+        yield return new WaitUntil(() => Input.GetButtonDown("Pressed E"));
 
         Debug.Log("Pressed");
 
-        if (Input.GetButtonDown("Open Door"))
+        if (Input.GetButtonDown("Pressed E"))
         {
             if (sabotage == 0)
             {
