@@ -64,7 +64,8 @@ public class SabotageManager : MonoBehaviour
             sabotages[i].FakeStart(objects[i]);
         }
 
-        StartCoroutine(DecideSabotage());
+        sabotages[0].ActivateSabotage();
+        //StartCoroutine(DecideSabotage());
     }
 
 
@@ -132,7 +133,7 @@ public class SabotageManager : MonoBehaviour
         StartCoroutine(DecideSabotage());
     }
 
-
+    //Tells the game that the sabotage has been fixed
     public void StopSabatage(SabotageType st)
     {
         sabotages[(int)st].FixSabotage();

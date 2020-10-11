@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class TVSabotage : Sabotage
 {
-    public GameObject go;
+    public GameObject obj;
 
     public override void FakeStart(GameObject go)
     {
         Debug.Log("TV Start");
+        obj = go;
 
     }
 
@@ -16,12 +17,14 @@ public class TVSabotage : Sabotage
     public override void ActivateSabotage()
     {
         isSabotaged = true;
+        obj.GetComponent<Renderer>().material.color = Color.blue;
         Debug.Log("TV Sabotage");
     }
 
     public override void FixSabotage()
     {
         isSabotaged = false;
+        obj.GetComponent<Renderer>().material.color = Color.black;
         Debug.Log("Fix TV");
         GameManager.Instance.SetIsSabotageActive();
     }
