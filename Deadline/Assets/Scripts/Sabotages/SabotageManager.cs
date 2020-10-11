@@ -186,6 +186,9 @@ public class SabotageManager : MonoBehaviour
         {
             sabotages[2].FixSabotage();
             Debug.Log("won");
+
+            isFinished = false;
+            isHeld = false;
         }
         else
         {
