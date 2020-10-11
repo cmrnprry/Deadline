@@ -9,6 +9,7 @@ public class ScreenManager : MonoBehaviour
     public Camera one;
     public Camera two;
     public GameObject player;
+    public GameObject walkingCanvas;
 
     void Start()
     {
@@ -26,6 +27,7 @@ public class ScreenManager : MonoBehaviour
     public void StandingCamera()
     {
         player.SetActive(true);
+        walkingCanvas.SetActive(true);
     }
 
     //Waits until the button to stand up is pressed
@@ -51,6 +53,7 @@ public class ScreenManager : MonoBehaviour
         Debug.Log("Sitting");
 
         player.SetActive(false);
+        walkingCanvas.SetActive(false);
 
         GameManager.Instance.state = GameState.Sitting;
         GameManager.Instance.UpdateGameState();

@@ -30,6 +30,7 @@ public class GameManager : MonoBehaviour
     [Header("References to other scripts :(")]
     public ScreenManager screenManager;
     public UIManager uiManager;
+    public SabotageManager sabotageManager;
 
     private static GameManager _instance;
 
@@ -51,15 +52,20 @@ public class GameManager : MonoBehaviour
         StartCoroutine(SpookyMeter());
     }
 
-    //Loop to check the meter every frame?
+    //Loop to check the meter every 15 seconds?
     //I'm sorry I just refuse to use the update function,
     //it has hurt me too many times in the past :(
     IEnumerator SpookyMeter()
     {
+        // if the curr is less than the max, add the delta. Otherwise return itself
         currSpooky = (currSpooky < maxSpooky) ? currSpooky + delta : currSpooky;
+
+        //if the curr is less that the max and a current sabotage is active, add the extra to the curr.
         currSpooky = (currSpooky < maxSpooky && isSabotageActive) ? currSpooky + activeDelta : currSpooky;
 
-        yield return new WaitForFixedUpdate();
+
+        Debug.Log("Spooky Meter: " + currSpooky);
+        yield return new WaitForSecondsRealtime(15f);
 
         StartCoroutine(SpookyMeter());
     }
@@ -91,6 +97,12 @@ public class GameManager : MonoBehaviour
             default:
                 break;
         }
+    }
+
+    //Setter for isSabotageActive
+    public void SetIsSabotageActive()
+    {
+        isSabotageActive = sabotageManager.CheckActiveSabotages();
     }
 
     //Setter method to set the canSit bool

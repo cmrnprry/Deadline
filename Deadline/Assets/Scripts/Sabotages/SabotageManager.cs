@@ -2,9 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
+public enum SabotageType
+{
+    TV = 0, DoorBell = 1, Internet = 2, BreakerBox = 4
+}
+
 public class SabotageManager : MonoBehaviour
 {
     private List<Sabotage> sabotages = new List<Sabotage>();
+
+    //IMPORTANT: I AM BEING SO LAZY AND THESE ALL NEED TO BE IN THE SAME ORDER AS THE ABOVE LIST
+    [Header("Objects to be Sabotaged")]
+    public List<GameObject> objects;
 
     //How long between sabotages there are
     public float delay = 5f;
@@ -42,10 +52,17 @@ public class SabotageManager : MonoBehaviour
 
     private void Start()
     {
+        //IMPORTANT: I AM BEING SO LAZY AND THESE ALL NEED TO BE IN THIS ORDER
         sabotages.Add(new TVSabotage());
         sabotages.Add(new DoorbellSabotage());
         sabotages.Add(new InternetSabotage());
         sabotages.Add(new BreakerBoxSabotage());
+
+        //I just need them to have a Start method :(
+        for (int i = 0; i < sabotages.Count; i++)
+        {
+            sabotages[i].FakeStart(objects[i]);
+        }
 
         StartCoroutine(DecideSabotage());
     }
@@ -58,6 +75,7 @@ public class SabotageManager : MonoBehaviour
     //This will call itself every X number of seconds that we decide. We can also ver easily change this to a range.
     IEnumerator DecideSabotage()
     {
+        Debug.Log("Deciding");
         float sum = 0, random = 0, curr = GameManager.Instance.currSpooky;
         float tvFit = 0, doorFit = 0, internetFit = 0, breakerFit = 0;
 
@@ -101,22 +119,37 @@ public class SabotageManager : MonoBehaviour
         float[] values = { tvFit, doorFit, internetFit, breakerFit };
         random = GetPercentChance();
 
-        //Debug.Log("random: " + random);
-        //Debug.Log("tvFit: " + tvFit);
-        //Debug.Log("doorFit: " + doorFit);
-        //Debug.Log("internetFit: " + internetFit);
-        //Debug.Log("breakerFit: " + breakerFit);
-
         for (int i = 0; i < values.Length; i++)
         {
-            if (values[i] >= random)
+            if (values[i] >= random && !sabotages[i].isSabotaged)
             {
                 sabotages[i].ActivateSabotage();
+                GameManager.Instance.SetIsSabotageActive();
             }
         }
 
         yield return new WaitForSecondsRealtime(delay);
         StartCoroutine(DecideSabotage());
+    }
+
+
+    public void StopSabatage(SabotageType st)
+    {
+        sabotages[(int)st].FixSabotage();
+    }
+
+    //Checks if there are any active sabotages
+    public bool CheckActiveSabotages()
+    {
+        for (int i = 0; i < sabotages.Count; i++)
+        {
+            if (sabotages[i].isSabotaged)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     //Gets a random number between 0 and 1 inclusive
