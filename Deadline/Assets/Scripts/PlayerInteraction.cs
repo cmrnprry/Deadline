@@ -57,8 +57,6 @@ public class PlayerInteraction : MonoBehaviour
             sabotage = 2;
             interactionText.text = "Press E to Restart the Router";
             interactionText.gameObject.SetActive(true);
-            Cursor.lockState = CursorLockMode.None;
-            fpsLook.enabled = false;
             StartCoroutine(WaitingForInput());
         }
         else if (other.tag == "BreakerBox")
@@ -67,8 +65,6 @@ public class PlayerInteraction : MonoBehaviour
             sabotage = 3;
             interactionText.text = "Press E to Fix the Breaker Box";
             interactionText.gameObject.SetActive(true);
-            fpsLook.enabled = false;
-            Cursor.lockState = CursorLockMode.None;
             StartCoroutine(WaitingForInput());
         }
     }
@@ -162,6 +158,8 @@ public class PlayerInteraction : MonoBehaviour
                 Debug.Log("Interaction text pressed");
                 internet.SetActive(true);
                 interactionText.gameObject.SetActive(false);
+                Cursor.lockState = CursorLockMode.None;
+                fpsLook.enabled = false;
             }
             else if (sabotage == 3)
             {
@@ -169,6 +167,8 @@ public class PlayerInteraction : MonoBehaviour
                 sabotageManager.TogglesOnOff();
                 breakerBox.SetActive(true);
                 interactionText.gameObject.SetActive(false);
+                Cursor.lockState = CursorLockMode.None;
+                fpsLook.enabled = false;
             }
 
         }

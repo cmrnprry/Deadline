@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -22,6 +23,12 @@ public class SabotageManager : MonoBehaviour
 
     [Header("Breaker Box MiniGame")]
     public Toggle[] toggles;
+    [SerializeField]
+    private List<bool> startOrder = new List<bool>();
+    [SerializeField]
+    private List<Toggle> correctOrder = new List<Toggle>();
+    [SerializeField]
+    private List<Toggle> currentOrder = new List<Toggle>();
 
     [Header("Internet MiniGame")]
     //bool to check if the Internet button is being held down
@@ -217,33 +224,61 @@ public class SabotageManager : MonoBehaviour
             float random = Random.Range(0, 2);
 
             t.isOn = (random == 1) ? true : false;
+            startOrder.Add(t.isOn);
+
+            t.onValueChanged.AddListener(delegate
+            {
+                BreakerBoxGameWon(t);
+            });
+        }
+
+        //Shuffles the list to get a random order to flip the switches
+        //Idk how it works either. Lamda is wold man
+        correctOrder = toggles.OrderBy(x => Random.value).ToList();
+
+        foreach (Toggle t in correctOrder)
+        {
+            Debug.Log("Toggle: " + t.name);
         }
     }
 
     //This is called every time the player flips a toggle
-    public void BreakerBoxGameWon()
+    public void BreakerBoxGameWon(Toggle obj)
     {
-        if (CheckToggles())
+        currentOrder.Add(obj);
+
+        if (currentOrder.Count == correctOrder.Count && CheckToggles())
         {
             sabotages[3].FixSabotage();
             Debug.Log("won");
         }
-        else
+        else if (!CheckToggles())
         {
-            Debug.Log("not won");
+            FlipTogglesBack();
+            Debug.Log("messed up");
         }
+    }
+
+    private void FlipTogglesBack()
+    {
+        for (int ii = 0; ii < startOrder.Count; ii++)
+        {
+            toggles[ii].isOn = startOrder[ii];
+        }
+        currentOrder = new List<Toggle>();
     }
 
     //Checks if all th toggles are on
     private bool CheckToggles()
     {
-        foreach (Toggle t in toggles)
+        for (int ii = 0; ii < currentOrder.Count; ii++)
         {
-            if (!t.isOn)
+            if (currentOrder[ii] != correctOrder[ii])
             {
                 return false;
             }
         }
+
         return true;
     }
 
