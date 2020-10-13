@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 
 public enum SabotageType
@@ -18,6 +19,9 @@ public class SabotageManager : MonoBehaviour
 
     //How long between sabotages there are
     public float delay = 5f;
+
+    [Header("Breaker Box MiniGame")]
+    public Toggle[] toggles;
 
     [Header("Internet MiniGame")]
     //bool to check if the Internet button is being held down
@@ -70,7 +74,7 @@ public class SabotageManager : MonoBehaviour
             sabotages[i].FakeStart(objects[i]);
         }
 
-        sabotages[2].ActivateSabotage();
+        sabotages[3].ActivateSabotage();
         //StartCoroutine(DecideSabotage());
     }
 
@@ -159,7 +163,6 @@ public class SabotageManager : MonoBehaviour
         return false;
     }
 
-
     //Gets a random number between 0 and 1 inclusive
     private float GetPercentChance()
     {
@@ -204,5 +207,44 @@ public class SabotageManager : MonoBehaviour
         Debug.Log("Finished!");
     }
 
+    ////////////////////////   BREAKER BOX MINI GAME CODE     /////////////////////////////////////////////////////
+
+    //Randomly turn the switches on or off
+    public void TogglesOnOff()
+    {
+        foreach (Toggle t in toggles)
+        {
+            float random = Random.Range(0, 2);
+
+            t.isOn = (random == 1) ? true : false;
+        }
+    }
+
+    //This is called every time the player flips a toggle
+    public void BreakerBoxGameWon()
+    {
+        if (CheckToggles())
+        {
+            sabotages[3].FixSabotage();
+            Debug.Log("won");
+        }
+        else
+        {
+            Debug.Log("not won");
+        }
+    }
+
+    //Checks if all th toggles are on
+    private bool CheckToggles()
+    {
+        foreach (Toggle t in toggles)
+        {
+            if (!t.isOn)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
 
 }

@@ -6,21 +6,23 @@ using TMPro;
 public class PlayerInteraction : MonoBehaviour
 {
     public SabotageManager sabotageManager;
+    public FirstPersonLook fpsLook;
+    public TextMeshProUGUI interactionText;
 
     //int to check what has been sabotaged / what you are fixing
     private int sabotage = -1;
 
     [Header("DoorBell Sabotage")]
-    public TextMeshProUGUI doorText;
     //public Animator door;
 
     [Header("TV Sabotage")]
-    public TextMeshProUGUI TVText;
     //public Animator door;
 
     [Header("Internet Sabotage")]
     public GameObject internet;
-    public FirstPersonLook fpsLook;
+
+    [Header("Breaker Box Sabotage")]
+    public GameObject breakerBox;
 
     // Triggers to check if the player is closeenough to an object to interact with it
     private void OnTriggerEnter(Collider other)
@@ -35,7 +37,8 @@ public class PlayerInteraction : MonoBehaviour
             Debug.Log("TV");
             sabotage = 0;
             //Turns on the text to tell teh player to turn off teh TV
-            TVText.gameObject.SetActive(true);
+            interactionText.text = "Press E to Turn off TV";
+            interactionText.gameObject.SetActive(true);
             StartCoroutine(WaitingForInput());
         }
         else if (other.tag == "DoorBell")
@@ -44,18 +47,30 @@ public class PlayerInteraction : MonoBehaviour
             sabotage = 1;
             //Stop Sabotage but allow player to open the door
             sabotageManager.StopSabatage(SabotageType.DoorBell);
-            doorText.gameObject.SetActive(true);
+            interactionText.text = "Press E to Open the Door";
+            interactionText.gameObject.SetActive(true);
             StartCoroutine(WaitingForInput());
         }
         else if (other.tag == "Internet")
         {
             Debug.Log("internet");
             sabotage = 2;
-            internet.SetActive(true);
+            interactionText.text = "Press E to Restart the Router";
+            interactionText.gameObject.SetActive(true);
             Cursor.lockState = CursorLockMode.None;
             fpsLook.enabled = false;
+            StartCoroutine(WaitingForInput());
         }
-
+        else if (other.tag == "BreakerBox")
+        {
+            Debug.Log("Breaker Box");
+            sabotage = 3;
+            interactionText.text = "Press E to Fix the Breaker Box";
+            interactionText.gameObject.SetActive(true);
+            fpsLook.enabled = false;
+            Cursor.lockState = CursorLockMode.None;
+            StartCoroutine(WaitingForInput());
+        }
     }
 
     // Trigger to check if the player left the computer
@@ -70,6 +85,7 @@ public class PlayerInteraction : MonoBehaviour
         else if (other.tag == "TV")
         {
             sabotage = -1;
+            interactionText.gameObject.SetActive(false);
             Debug.Log("no TV");
         }
         else if (other.tag == "DoorBell")
@@ -79,13 +95,23 @@ public class PlayerInteraction : MonoBehaviour
             Debug.Log("Door Closed");
             //door.SetTrigger("Close");
             //Play Door creak SFX?
-            doorText.gameObject.SetActive(false);
+            interactionText.gameObject.SetActive(false);
         }
         else if (other.tag == "Internet")
         {
             Debug.Log("no internet");
             sabotage = -1;
+            interactionText.gameObject.SetActive(false);
             internet.SetActive(false);
+            fpsLook.enabled = true;
+            Cursor.lockState = CursorLockMode.Locked;
+        }
+        else if (other.tag == "BreakerBox")
+        {
+            Debug.Log("no Breaker Box");
+            sabotage = -1;
+            interactionText.gameObject.SetActive(false);
+            breakerBox.SetActive(false);
             fpsLook.enabled = true;
             Cursor.lockState = CursorLockMode.Locked;
         }
@@ -97,6 +123,15 @@ public class PlayerInteraction : MonoBehaviour
         Debug.Log("no internet");
         sabotage = -1;
         internet.SetActive(false);
+        fpsLook.enabled = true;
+        Cursor.lockState = CursorLockMode.Locked;
+    }
+
+    public void TurnOffBreakerBoxGame()
+    {
+        Debug.Log("no breaker box");
+        sabotage = -1;
+        breakerBox.SetActive(false);
         fpsLook.enabled = true;
         Cursor.lockState = CursorLockMode.Locked;
     }
@@ -114,13 +149,26 @@ public class PlayerInteraction : MonoBehaviour
             {
                 Debug.Log("TV Off");
                 sabotageManager.StopSabatage(SabotageType.TV);
-                TVText.gameObject.SetActive(false);
+                interactionText.gameObject.SetActive(false);
             }
             else if (sabotage == 1)
             {
                 Debug.Log("Door Open");
                 //door.SetTrigger("Open");
                 //Play Door creak SFX?
+            }
+            else if (sabotage == 2)
+            {
+                Debug.Log("Interaction text pressed");
+                internet.SetActive(true);
+                interactionText.gameObject.SetActive(false);
+            }
+            else if (sabotage == 3)
+            {
+                Debug.Log("Interaction text pressed");
+                sabotageManager.TogglesOnOff();
+                breakerBox.SetActive(true);
+                interactionText.gameObject.SetActive(false);
             }
 
         }

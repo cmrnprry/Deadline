@@ -7,9 +7,7 @@ public class BreakerBoxSabotage : Sabotage
     public override void FakeStart(GameObject go)
     {
         Debug.Log("Breaker Box Start");
-
     }
-
 
     public override void ActivateSabotage()
     {
