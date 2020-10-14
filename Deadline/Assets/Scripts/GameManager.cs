@@ -69,6 +69,8 @@ public class GameManager : MonoBehaviour
 
         StartCoroutine(SpookyMeter());
     }
+
+
     
     // Is called everytime the game state is updated
     public void UpdateGameState()

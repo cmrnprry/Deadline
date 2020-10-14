@@ -81,8 +81,7 @@ public class SabotageManager : MonoBehaviour
             sabotages[i].FakeStart(objects[i]);
         }
 
-        sabotages[3].ActivateSabotage();
-        //StartCoroutine(DecideSabotage());
+        StartCoroutine(DecideSabotage());
     }
 
 
