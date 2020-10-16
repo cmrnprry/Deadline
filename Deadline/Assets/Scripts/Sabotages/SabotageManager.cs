@@ -81,7 +81,7 @@ public class SabotageManager : MonoBehaviour
             sabotages[i].FakeStart(objects[i]);
         }
 
-        StartCoroutine(DecideSabotage());
+      //  StartCoroutine(DecideSabotage());
     }
 
 
@@ -92,7 +92,6 @@ public class SabotageManager : MonoBehaviour
     //This will call itself every X number of seconds that we decide. We can also ver easily change this to a range.
     IEnumerator DecideSabotage()
     {
-        Debug.Log("Deciding");
         float sum = 0, random = 0, curr = GameManager.Instance.currSpooky;
         float tvFit = 0, doorFit = 0, internetFit = 0, breakerFit = 0;
 
