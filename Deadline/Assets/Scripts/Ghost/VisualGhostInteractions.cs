@@ -24,7 +24,7 @@ public class VisualGhostInteractions : MonoBehaviour
     public List<VisualEncounters> encounters = new List<VisualEncounters>();
     private VisualEncounters lastEncounter = VisualEncounters.NULL;
 
-    [Header("Chance or something")]
+    [Header("Chance but the LOWER it is the MORE LIKEYLE it is")]
     //Chance of this visual scare happening
     public float chance;
     

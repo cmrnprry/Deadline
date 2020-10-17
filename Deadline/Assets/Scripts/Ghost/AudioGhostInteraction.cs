@@ -18,7 +18,7 @@ public class AudioGhostInteraction : MonoBehaviour
     [Header("Interaction Manager")]
     public GhostInteractionManager interactionManager;
 
-    [Header("Chance or something")]
+    [Header("Chance but the LOWER it is the MORE LIKEYLE it is")]
     //Chance of this visual scare happening
     public float chance;
 
