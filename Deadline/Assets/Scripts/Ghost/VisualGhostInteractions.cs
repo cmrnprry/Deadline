@@ -12,7 +12,7 @@ public enum VisualEncounters
 public class VisualGhostInteractions : MonoBehaviour
 {
     [Header("Audio")]
-    //If any audio plays on the INteraction
+    //If any audio plays on the Interaction
     public AudioClip SFX;
     public AudioSource source;
 
@@ -27,6 +27,8 @@ public class VisualGhostInteractions : MonoBehaviour
     [Header("Chance or something")]
     //Chance of this visual scare happening
     public float chance;
+    
+    [Header("Delay in Seconds")]
     //Min / Max amount of time to keep the trigger turned off
     public float minDelay;
     public float maxDelay;
@@ -44,7 +46,7 @@ public class VisualGhostInteractions : MonoBehaviour
         {
             Debug.Log("Trigger ghost?");
 
-            if (interactionManager.DecideVisualGhostEncounter(chance))
+            if (interactionManager.DecideGhostEncounter(chance))
             {
                 ShowGhost();
             }
