@@ -12,6 +12,10 @@ public class InkManager : MonoBehaviour
     public Story story;
     private List<string> tags = new List<string>();
 
+    [Header("Chat UI")]
+    public int speakerTagSize;
+    public int textSize;
+
     [Header("UI Variables")]
     public List<Button> buttons;
     public TextMeshProUGUI text;
@@ -38,16 +42,14 @@ public class InkManager : MonoBehaviour
             //basically if the friends are typing
             if (tags.Contains("Speaker_One") || tags.Contains("Speaker_Two") || tags.Contains("Speaker_Three"))
             {
-                text.text += "<align=left>" + line;
-                text.text += "\n";
-
-
+                text.text += "<align=left><size=" + speakerTagSize + ">" + tags[0] + "\n";
+                text.text += "<align=left><size=" + textSize + ">" + line + "\n";
             }
             //Otherwise show the player response
             else
             {
-                text.text += "<align=right>" + line;
-                text.text += "\n";
+                text.text += "<align=right><size=" + speakerTagSize + "> Player\n";
+                text.text += "<align=right><size=" + textSize + ">" + line + "\n";
             }
         }
         else

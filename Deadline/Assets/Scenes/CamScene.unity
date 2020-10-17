@@ -271,7 +271,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &166612321
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3276,6 +3276,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inkJSON: {fileID: 4900000, guid: 4ce83f9a49d51944f94419c2c4e84458, type: 3}
+  speakerTagSize: 12
+  textSize: 18
   buttons:
   - {fileID: 564567552}
   - {fileID: 1254107773}
