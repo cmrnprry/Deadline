@@ -15,17 +15,21 @@ public class InkManager : MonoBehaviour
     [Header("Chat UI")]
     public int speakerTagSize;
     public int textSize;
+    public Scrollbar scrollbar;
 
     [Header("UI Variables")]
     public List<Button> buttons;
     public TextMeshProUGUI text;
+
+    [Header("Keeping Track of Convos")]
+    private bool waitingForNext; //bool to check if the game is waiting to show the next convo
+    private float time; // time in seconds until the next convo is triggered
 
     // Start is called before the first frame update
     void Start()
     {
         story = new Story(inkJSON.text);
         StartCoroutine(InkLoop());
-
     }
 
     IEnumerator InkLoop()
@@ -34,9 +38,6 @@ public class InkManager : MonoBehaviour
         {
             string line = story.Continue();
             line.Trim();
-
-            Debug.Log("Line: " + line);
-
             tags = story.currentTags;
 
             //basically if the friends are typing
@@ -44,12 +45,31 @@ public class InkManager : MonoBehaviour
             {
                 text.text += "<align=left><size=" + speakerTagSize + ">" + tags[0] + "\n";
                 text.text += "<align=left><size=" + textSize + ">" + line + "\n";
+
+                Canvas.ForceUpdateCanvases();
+                scrollbar.value = 0;
             }
             //Otherwise show the player response
             else
             {
                 text.text += "<align=right><size=" + speakerTagSize + "> Player\n";
                 text.text += "<align=right><size=" + textSize + ">" + line + "\n";
+
+                Canvas.ForceUpdateCanvases();
+                scrollbar.value = 0;
+            }
+
+            //If the Tag "End" is seen, the next tag (WHICH SHOULD BE THE LAST ONE) will be how long to wait before starting a new conversation
+            //So then we'll wait and then restart the ink loop
+            if (tags.Contains("End"))
+            {
+                waitingForNext = true;
+                time = float.Parse(tags[tags.Count - 1]);
+
+                yield return new WaitForSecondsRealtime(time);
+                WaitForNextConvo();
+
+                yield break;
             }
         }
         else
@@ -70,6 +90,31 @@ public class InkManager : MonoBehaviour
         //Show a typing anim? Or something?
         yield return new WaitForSecondsRealtime(2f);
         StartCoroutine(InkLoop());
+    }
+
+    void WaitForNextConvo()
+    {
+        Debug.Log("Next Convo");
+        waitingForNext = false;
+        StartCoroutine(InkLoop());
+    }
+
+    public void StopCoroutine()
+    {
+        StopAllCoroutines();
+    }
+
+    public void RestartCoroutine()
+    {
+        if (waitingForNext)
+        {
+            Invoke("WaitForNextConvo", time);
+        }
+        else
+        {
+            StartCoroutine(InkLoop());
+        }
+
     }
 
     // Display all the choices, if there are any!
